@@ -54,10 +54,8 @@ def construct_insert(row, table_name):
     fields = tuple([row[key] for key in row]) 
     
     # unpacks tuple into format, should work like a dream 
-    # possible hickup: lack of strings on fields 
     query = query.format(*fields)
-    
-    #TODO: test this!  
+     
     return query
 
         
@@ -69,7 +67,7 @@ def get_data(FILENAME, DB_FILE):
         count = 0
         for row in get_row(r):
             query = construct_insert(row, 'ways')
-            # update_db(query, DB_FILE)
+            update_db(query, DB_FILE)
             
 
         
