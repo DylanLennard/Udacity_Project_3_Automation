@@ -9,7 +9,8 @@ import sys
 def create_connection(db_file):
     """ create a database connection to a SQLite database """
     try:
-        conn = sqlite3.connect(db_file) # if db_file doesn't exist, this command creates it
+        # if db_file doesn't exist, this command creates it
+        conn = sqlite3.connect(db_file) 
         
     except Error as e:
         print(e)
@@ -51,7 +52,7 @@ def construct_insert(row, table_name):
     query = """insert into {} values ({})""".format(table_name, query_inserts)
     
     # because this is an ordered dict we can unpack correct order!  
-    fields = tuple([row[key] for key in row]) 
+    fields = tuple([row[key].replace("'", "''") for key in row]) 
     
     # unpacks tuple into format, should work like a dream 
     query = query.format(*fields)
@@ -60,18 +61,40 @@ def construct_insert(row, table_name):
 
         
 def get_data(FILENAME, DB_FILE):      
-
+    
+    # TODO: enter connection in here and then set up try/except blocks
+    # this will cut down on connection time  
+    
     # iterate through csv file and read it into sql 
     with open(FILENAME, 'r') as f: 
         r = csv.DictReader(f)
-        count = 0
-        for row in get_row(r):
-            query = construct_insert(row, 'ways')
-            update_db(query, DB_FILE)
+        
+        try: 
+            conn = sqlite3.connect(DB_FILE)
+            c = conn.cursor()
+            for row in get_row(r):
+                
+                # TODO: get table name read in from filename  
+                query = construct_insert(row, 'nodes_tags')
+                # update_db(query, DB_FILE)
+                
+                try: 
+                    c.execute(query)
+                    conn.commit() 
+            
+                except Exception as e:
+                    print (e, query)
+                
+        except Error as e:
+            print(e)
+        
+        finally:
+            conn.close()
+            print("connection closed")
             
 
         
-def results_query(query, db_file="test.db"):
+def results_query(query, db_file):
     try: 
         conn = sqlite3.connect(db_file)
         c = conn.cursor()
