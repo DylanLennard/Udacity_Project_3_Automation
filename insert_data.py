@@ -45,12 +45,19 @@ def get_row(dictReader):
         
 # step 4
 def construct_insert(row, table_name):
-    query = """
-        insert into {} values ('{}','{}', '{}', '{}','{}', '{}')
-        """.format(table_name, row['id'], 
-                   row['user'], row['uid'], 
-                   row['version'], row['changeset'],
-                   row['timestamp'])
+    
+    setup = ["'{}'"]* len(row)
+    query_inserts = ', '.join(setup)
+    query = """insert into {} values ({})""".format(table_name, query_inserts)
+    
+    # because this is an ordered dict we can unpack correct order!  
+    fields = tuple([row[key] for key in row]) 
+    
+    # unpacks tuple into format, should work like a dream 
+    # possible hickup: lack of strings on fields 
+    query = query.format(*fields)
+    
+    #TODO: test this!  
     return query
 
         
@@ -62,7 +69,7 @@ def get_data(FILENAME, DB_FILE):
         count = 0
         for row in get_row(r):
             query = construct_insert(row, 'ways')
-            update_db(query, DB_FILE)
+            # update_db(query, DB_FILE)
             
 
         

@@ -28,6 +28,6 @@ def sample_data(OSM_FILE, SAMPLE_FILE, k=10):
         # Write every kth top level element
         for i, element in enumerate(get_element(OSM_FILE)):
             if i % k == 0:
-                output.write(ET.tostring(element))
+                output.write(ET.tostring(element, encoding="unicode"))
     
         output.write('</osm>')

@@ -11,13 +11,12 @@ import users
 import audit
 import data
 import check_files 
-
-import sql
+import insert_data 
 
 
 URL = "http://overpass-api.de/api/map?bbox=-87.5322,36.4246,-87.19,36.64"
 FILENAME = "./OSM_files/Clarksville.OSM" 
-SAMPLE_NAME = "./OSM_filesClarksville_Sample.OSM"
+SAMPLE_NAME = "./OSM_files/Clarksville_Sample.OSM"
 DB_FILE = "./DB/Clarksville.DB"
 SQL_FILE = "./SQL_files/populate_db.sql"
 CSV_PATH = "./CSV_files/"
@@ -84,9 +83,8 @@ if __name__ == "__main__":
     # get the data (optional)
     request_data.get_XML_data(URL, FILENAME)
     
-    # get a sample of the data first (this is optional once we're done)
-    # TODO: clean this function up and make it work 
-    #sample.sample_data(FILENAME, SAMPLE_NAME, k=10)
+    # get a sample of the data first (this is optional once we're done) 
+    sample.sample_data(FILENAME, SAMPLE_NAME, k=10)
     
     # count how many tags we have 
     pprint(mapparser.count_tags(FILENAME))
@@ -106,7 +104,8 @@ if __name__ == "__main__":
     data.process_map(FILENAME, validate=False)
     
     
-    
+    # from here, put everything into your sqlite3 database  
+    # or....try to load everything through python  
 
 
 
