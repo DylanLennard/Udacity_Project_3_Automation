@@ -64,10 +64,11 @@ def construct_insert(row, table_name):
     query = """insert into {} values ({})""".format(table_name, query_inserts)
     
     # because this is an ordered dict we can unpack correct order!  
-    fields = tuple([row[key].replace("'", "''") if isinstance(row[key], str) \
+    fields = tuple([row[key].replace("'", "''") \
+                    if isinstance(row[key], str) \
                         else row[key] for key in row]) 
     
-    # unpacks tuple into format, should work like a dream 
+    # unpacks tuple into format, works like a dream
     query = query.format(*fields)
      
     return query
@@ -78,8 +79,6 @@ def get_data(FILENAME, DB_FILE):
     '''
     Opens file, connects to DB, iterates through file, updates data in DB
     '''
-    
-    # iterate through csv file and read it into sql 
     with open(FILENAME, 'r') as f: 
         r = csv.DictReader(f)
         

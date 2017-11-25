@@ -110,12 +110,14 @@ if __name__ == "__main__":
     print("\nExporting data to csv files:")
     data.process_map(FILENAME, validate=False)
     
+    # If you want to load content with CSV in terminal, comment out the
+    # the code below as it's for loading all data into sql from python
     
-    # from here, try to load everything through python
+    
     # 0) Make sure the DB has been created by establishing connection first:
     insert_data.create_connection(DB_FILE)
     
-    # 1) split the drop query on ; and execute each of those queries on updateDB
+    # 1) split the drop query on ; and execute each of those queries against DB
     for drop in DROP_QUERY.split(";"):
         insert_data.update_db(drop, DB_FILE)
     
