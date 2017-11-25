@@ -5,6 +5,7 @@ import sqlite3
 from sqlite3 import Error 
 import csv 
 import sys
+import re 
 
 def create_connection(db_file):
     """ 
@@ -26,7 +27,7 @@ def create_connection(db_file):
 def update_db(query, db_file):
     
     """
-    Updates the DB query with insert/create statements (soon to be deprecated)
+    Updates the DB query with insert/create statements
     """
     try: 
         conn = sqlite3.connect(db_file)
@@ -63,7 +64,8 @@ def construct_insert(row, table_name):
     query = """insert into {} values ({})""".format(table_name, query_inserts)
     
     # because this is an ordered dict we can unpack correct order!  
-    fields = tuple([row[key].replace("'", "''") for key in row]) 
+    fields = tuple([row[key].replace("'", "''") if isinstance(row[key], str) \
+                        else row[key] for key in row]) 
     
     # unpacks tuple into format, should work like a dream 
     query = query.format(*fields)
@@ -86,8 +88,9 @@ def get_data(FILENAME, DB_FILE):
             c = conn.cursor()
             for row in get_row(r):
                 
-                # TODO: get table name read in from filename  
-                query = construct_insert(row, 'nodes_tags')
+                # get tablename from the filename then construct query 
+                table_name = re.sub("./CSV_files/|.csv", "", FILENAME)
+                query = construct_insert(row, table_name)
                 
                 try: 
                     c.execute(query)
@@ -95,8 +98,8 @@ def get_data(FILENAME, DB_FILE):
                 except Exception as e:
                     print (e, query)
         
-        # once all statements completed, commit changes
-        conn.commit()
+            # once all statements completed, commit changes
+            conn.commit()
                 
         except Error as e:
             print(e)

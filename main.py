@@ -78,38 +78,55 @@ DROP TABLE IF EXISTS NODES_TAGS;
 
 
 
+
+
 if __name__ == "__main__":
 
     # get the data (optional)
+    print("Requesting Data:\n")
     request_data.get_XML_data(URL, FILENAME)
     
-    # get a sample of the data first (this is optional once we're done) 
+    # get a sample of the data first (this is optional once we're done)
+    print("\nCreating sample of Data in case we need it:\n")
     sample.sample_data(FILENAME, SAMPLE_NAME, k=10)
     
-    # count how many tags we have 
+    # count how many tags we have
+    print("\nTag count:")
     pprint(mapparser.count_tags(FILENAME))
     
-    # get idea of what kind of fixes we should make  
+    # get idea of what kind of fixes we should make
+    print("\nTags issues:")
     pprint(tags.process_map(FILENAME))
     
-    # get idea of unique users in dataset 
-    # possibly use this to make another table called users. we'll see 
+    # get idea of unique users in dataset
+    print("\nUnique User Count:\n")
     print(users.process_map(FILENAME)) 
     
     # audit the data to see lastly what changes need be made
+    print("\nIdeas for audits that should be made:")
     pprint(audit.audit(FILENAME))
     
-    # lastly, after examining the data, call data.py. 
-    # one change ou need to make: include audit in data.py somehow 
+    # lastly, after examining the data, call data.py.
+    print("\nExporting data to csv files:")
     data.process_map(FILENAME, validate=False)
     
     
-    # from here, put everything into your sqlite3 database  
-    # or....try to load everything through python  
+    # from here, try to load everything through python
+    # 0) Make sure the DB has been created by establishing connection first:
+    insert_data.create_connection(DB_FILE)
+    
+    # 1) split the drop query on ; and execute each of those queries on updateDB
+    for drop in DROP_QUERY.split(";"):
+        insert_data.update_db(drop, DB_FILE)
+    
+    # 2) performm the same for the create query
+    for create in CREATE_QUERY.split(";"):
+        insert_data.update_db(create, DB_FILE)
+
+    # 3) call the get_data function and give it time to execute
+    for file in os.listdir(CSV_PATH):
+        filename = CSV_PATH+file
+        print("Inserting data in ",file)
+        insert_data.get_data(filename, DB_FILE)
 
 
-
-
-'''   
-sql.create_connection(DB_FILE)
-sql.get_data(CSV_PATH, SQL_FILE, create=CREATE_QUERY, drop=DROP_QUERY)'''
