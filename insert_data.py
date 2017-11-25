@@ -7,7 +7,10 @@ import csv
 import sys
 
 def create_connection(db_file):
-    """ create a database connection to a SQLite database """
+    """ 
+    create a database connection to a SQLite database 
+    """
+    
     try:
         # if db_file doesn't exist, this command creates it
         conn = sqlite3.connect(db_file) 
@@ -21,6 +24,10 @@ def create_connection(db_file):
 
 # step 2  
 def update_db(query, db_file):
+    
+    """
+    Updates the DB query with insert/create statements (soon to be deprecated)
+    """
     try: 
         conn = sqlite3.connect(db_file)
         c = conn.cursor()
@@ -46,8 +53,12 @@ def get_row(dictReader):
         
 # step 4
 def construct_insert(row, table_name):
+    """
+    Dynamically creates the insert statement needed to insert the data from 
+    the CSV file. This query will accomodate all tables.
+    """
     
-    setup = ["'{}'"]* len(row)
+    setup = ["'{}'"] * len(row)
     query_inserts = ', '.join(setup)
     query = """insert into {} values ({})""".format(table_name, query_inserts)
     
@@ -62,8 +73,9 @@ def construct_insert(row, table_name):
         
 def get_data(FILENAME, DB_FILE):      
     
-    # TODO: enter connection in here and then set up try/except blocks
-    # this will cut down on connection time  
+    '''
+    Opens file, connects to DB, iterates through file, updates data in DB
+    '''
     
     # iterate through csv file and read it into sql 
     with open(FILENAME, 'r') as f: 
@@ -76,14 +88,15 @@ def get_data(FILENAME, DB_FILE):
                 
                 # TODO: get table name read in from filename  
                 query = construct_insert(row, 'nodes_tags')
-                # update_db(query, DB_FILE)
                 
                 try: 
                     c.execute(query)
-                    conn.commit() 
             
                 except Exception as e:
                     print (e, query)
+        
+        # once all statements completed, commit changes
+        conn.commit()
                 
         except Error as e:
             print(e)
@@ -95,6 +108,10 @@ def get_data(FILENAME, DB_FILE):
 
         
 def results_query(query, db_file):
+    """
+    Used for querying the DB to check that changes happened
+    """
+    
     try: 
         conn = sqlite3.connect(db_file)
         c = conn.cursor()
