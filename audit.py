@@ -78,23 +78,3 @@ def check_and_fix_street_name(elem):
     for tag in elem.iter("tag"):
         if is_street_name(tag):
             update_name(tag.attrib['v'], mapping)
-
-'''
-def test():
-    st_types = audit(OSMFILE)
-    assert len(st_types) == 3
-    pprint.pprint(dict(st_types))
-
-    for st_type, ways in st_types.items(): # changed this method from .iteritems() from 2.7 to 3.6's .items()  
-        for name in ways:
-            better_name = update_name(name, mapping)
-            print (name, "=>", better_name) # cleaned up this print statement 
-            if name == "West Lexington St.":
-                assert better_name == "West Lexington Street"
-            if name == "Baldwin Rd.":
-                assert better_name == "Baldwin Road"
-
-
-if __name__ == '__main__':
-    test()
-'''

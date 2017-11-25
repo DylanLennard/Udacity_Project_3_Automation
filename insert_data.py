@@ -7,6 +7,7 @@ import csv
 import sys
 import re 
 
+
 def create_connection(db_file):
     """ 
     create a database connection to a SQLite database 
@@ -21,9 +22,8 @@ def create_connection(db_file):
         
     finally:
         conn.close()
-    
 
-# step 2  
+
 def update_db(query, db_file):
     
     """
@@ -47,12 +47,11 @@ def update_db(query, db_file):
         conn.close()
         
 
-# step 3
 def get_row(dictReader):
     for row in dictReader: 
         yield row
         
-# step 4
+
 def construct_insert(row, table_name):
     """
     Dynamically creates the insert statement needed to insert the data from 

@@ -34,4 +34,4 @@ def process_map(filename):
 
     return len(users) 
 
-# TODO: rethink this function to return a csv file of usernames and userIDs 
+# TODO: Consider having this function return a user table

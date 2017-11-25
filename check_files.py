@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import pandas as pd
+import csv
 
 
 # this is how I'd do it with csv
@@ -15,7 +16,7 @@ def check_file_w_csv(file, fields):
         print("Filename:", NODES_PATH)
         print("Number of Rows:", len(r))
         print("Column Names:", r[0].keys()) # create check agains our fields list 
-        print("First Rows: ",r[0:4])
+        print("First Rows: ", r[0:4])
         print("\n")
 
 # However the output from here is a little cleaner and easier to understand since we know pandas already
@@ -51,12 +52,3 @@ def check_file(file, fields):
     
     print("Head:\n", DF.head(n=3))
     print("\n\n")
- 
-# comment the following: 
-'''
-check_file(NODES_PATH, NODE_FIELDS)
-check_file(NODE_TAGS_PATH, NODE_TAGS_FIELDS)
-check_file(WAYS_PATH, WAY_FIELDS)
-check_file(WAY_NODES_PATH, WAY_NODES_FIELDS)
-check_file(WAY_TAGS_PATH, WAY_TAGS_FIELDS)
-'''

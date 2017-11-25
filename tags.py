@@ -54,20 +54,3 @@ def process_map(filename):
     for _, element in ET.iterparse(filename):
         keys = key_type(element, keys)
     return keys
-
-
-'''
-def test():
-    # You can use another testfile 'map.osm' to look at your solution
-    # Note that the assertion below will be incorrect then.
-    # Note as well that the test function here is only used in the Test Run;
-    # when you submit, your code will be checked against a different dataset.
-    keys = process_map('tag_types.xml')
-    pprint.pprint(keys)
-    
-    assert keys == {'lower': 5, 'lower_colon': 0, 'other': 1, 'problemchars': 1}
-
-
-if __name__ == "__main__":
-    test()
-'''
