@@ -42,7 +42,8 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
     tags = []  # Handle secondary tags the same way for both node and way elements
 
     # YOUR CODE HERE
-    def get_tags(element, tags):
+    def get_tags(element):
+        tags = []
         for child in element.iter('tag'): 
             
             attr = child.attrib
@@ -83,7 +84,7 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
         node_attribs['changeset'] = attr['changeset'] 
         
         # tags list 
-        tags = get_tags(element, [])
+        tags = get_tags(element)
         return {'node': node_attribs, 'node_tags': tags}
     
     elif element.tag == 'way':
@@ -106,7 +107,7 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
             way_nodes.append(way_node_dict)
             
         # tags list 
-        tags = get_tags(element, [])
+        tags = get_tags(element)
 
         return {'way': way_attribs, 'way_nodes': way_nodes, 'way_tags': tags}
 
