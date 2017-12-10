@@ -74,31 +74,18 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
     if element.tag == 'node':
         
         attr = element.attrib
-        
-        # TODO: rewrite using iteration  
-        node_attribs['id'] = attr['id']
-        node_attribs['user'] = attr['user']
-        node_attribs['uid'] = attr['uid']
-        node_attribs['version'] = attr['version']
-        node_attribs['lat'] = attr['lat']
-        node_attribs['lon'] = attr['lon']
-        node_attribs['timestamp'] = attr['timestamp']
-        node_attribs['changeset'] = attr['changeset'] 
+        for field in node_attr_fields:
+            node_attribs[field] = attr[field]
         
         # tags list 
         tags = get_tags(element)
         return {'node': node_attribs, 'node_tags': tags}
     
     elif element.tag == 'way':
-        
-        # TODO: rewrite using iteration  
+          
         attr = element.attrib
-        way_attribs['id'] = attr['id']
-        way_attribs['user'] = attr['user']
-        way_attribs['uid'] = attr['uid']
-        way_attribs['version'] = attr['version']
-        way_attribs['timestamp'] = attr['timestamp']
-        way_attribs['changeset'] = attr['changeset']
+        for field in way_attr_fields:
+            way_attribs[field] = attr[field]
         
         # set up way nodes 
         for i, child in enumerate(element.iter('nd')):
