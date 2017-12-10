@@ -65,7 +65,7 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
                 child_dict['type'] = attr['k'].split(':')[0]
             
             else: 
-                child_dict['type'] = 'regular' 
+                child_dict['type'] = default_tag_type
                 
             tags.append(child_dict)
             
@@ -74,6 +74,8 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
     if element.tag == 'node':
         
         attr = element.attrib
+        
+        # TODO: rewrite using iteration  
         node_attribs['id'] = attr['id']
         node_attribs['user'] = attr['user']
         node_attribs['uid'] = attr['uid']
@@ -89,6 +91,7 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
     
     elif element.tag == 'way':
         
+        # TODO: rewrite using iteration  
         attr = element.attrib
         way_attribs['id'] = attr['id']
         way_attribs['user'] = attr['user']
