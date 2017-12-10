@@ -63,15 +63,15 @@ def shape_element(element, node_attr_fields=NODE_FIELDS,
             # stackoverflow.com/questions/6903557/splitting-on-first-occurrence
             child_dict['key'] = attr['k'].split(':', 1)[-1]
 
-            # Check if the k tag has : in it and treat according to specs 
+            # Check if the k tag has : in it and treat according to specs
             if LOWER_COLON.search(attr['k']):
                 child_dict['type'] = attr['k'].split(':')[0]
             else:
                 child_dict['type'] = default_tag_type
-            
+
             # street name check (not all : matches are addr:)
-            if child_dict['type'] == 'addr':
-                child_dict['value'] = update_street_name(child_dict['value']) 
+            if child_dict['type'] == 'addr' & child_dict['key'] == 'street':
+                child_dict['value'] = update_street_name(child_dict['value'])
 
             tags.append(child_dict)
 
