@@ -180,10 +180,9 @@ def process_map(file_in, validate):
         way_tags_writer.writeheader() 
 
         validator = cerberus.Validator() 
-        
-        
-        #added this
-        count = 0
+ 
+    
+
         for element in get_element(file_in, tags=('node', 'way')):
             
             el = shape_element(element)
