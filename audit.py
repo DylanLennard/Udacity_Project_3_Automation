@@ -13,7 +13,6 @@ Your task in this exercise has two steps:
 import xml.etree.cElementTree as ET
 from collections import defaultdict
 import re
-import pprint
 
 OSMFILE = "improving_street_names.xml"
 street_type_re = re.compile(r'\b\S+\.?$', re.IGNORECASE)
@@ -56,12 +55,12 @@ def audit(osmfile):
             for tag in elem.iter("tag"):
                 if is_street_name(tag):
                     audit_street_type(street_types, tag.attrib['v'])
-                    
+               
     osm_file.close()
     return street_types
 
 
-def update_name(name, street_mapping):
+def update_street_name(name, mapping=street_mapping):
 
     # YOUR CODE HERE
     name_split = name.split(" ")
@@ -69,11 +68,5 @@ def update_name(name, street_mapping):
         if val in mapping.keys():
             name_split[i] = mapping[val]
     name = " ".join(name_split)
-    
-    return name 
 
-## added this for data to access 
-def check_and_fix_street_name(elem):
-    for tag in elem.iter("tag"):
-        if is_street_name(tag):
-            update_name(tag.attrib['v'], mapping)
+    return name

@@ -7,10 +7,7 @@ import xml.etree.cElementTree as ET
 import cerberus
 import schema
 
-
-from audit import check_and_fix_street_name
-# TODO nix check_and_fix_street name and add condition to get_tag function
-# from audit import is_street_name, update_name, street_mapping
+from audit import update_street_name
 
 
 # files and filepaths
@@ -66,11 +63,15 @@ def shape_element(element, node_attr_fields=NODE_FIELDS,
             # stackoverflow.com/questions/6903557/splitting-on-first-occurrence
             child_dict['key'] = attr['k'].split(':', 1)[-1]
 
-            # Check if the k tag has addr in it and treat according to specs
+            # Check if the k tag has : in it and treat according to specs 
             if LOWER_COLON.search(attr['k']):
                 child_dict['type'] = attr['k'].split(':')[0]
             else:
                 child_dict['type'] = default_tag_type
+            
+            # street name check (not all : matches are addr:)
+            if child_dict['type'] == 'addr':
+                child_dict['value'] = update_street_name(child_dict['value']) 
 
             tags.append(child_dict)
 
@@ -178,14 +179,14 @@ def process_map(file_in, validate):
 
                 if element.tag == 'node':
                     # call function from audit
-                    check_and_fix_street_name(element)
+                    # check_and_fix_street_name(element)
                     # then finish writing to csv
                     nodes_writer.writerow(el['node'])
                     node_tags_writer.writerows(el['node_tags'])
 
                 elif element.tag == 'way':
                     # call function from audit
-                    check_and_fix_street_name(element)
+                    # check_and_fix_street_name(element)
                     # then finish writing to csv
                     ways_writer.writerow(el['way'])
                     way_nodes_writer.writerows(el['way_nodes'])
