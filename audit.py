@@ -19,21 +19,20 @@ OSMFILE = "improving_street_names.xml"
 street_type_re = re.compile(r'\b\S+\.?$', re.IGNORECASE)
 
 
-expected = ["Street", "Avenue", "Boulevard", "Drive", "Court", "Place", "Square", "Lane", "Road", 
+expected = ["Street", "Avenue", "Boulevard", "Drive", "Court", "Place",
+            "Square", "Lane", "Road",
             "Trail", "Parkway", "Commons"]
 
-
-# note: for now you're just making changes for what you see in the test function below  
-mapping = { "St"  : "Street",
-            "St." : "Street", 
-            "Rd." : "Road", 
-            "Ave" : "Avenue",
-            "N."  : "North", 
-            "Rd"  : "Road", 
-            "Dr"  : "Drive",
-            "Hwy.": "Highway", 
-            "st"  : "Street"
-            }
+street_mapping = {"St": "Street",
+                  "St.": "Street",
+                  "Rd.": "Road",
+                  "Ave": "Avenue",
+                  "N.": "North",
+                  "Rd": "Road",
+                  "Dr": "Drive",
+                  "Hwy.": "Highway",
+                  "st": "Street"
+                  }
 
 
 def audit_street_type(street_types, street_name):
@@ -62,7 +61,7 @@ def audit(osmfile):
     return street_types
 
 
-def update_name(name, mapping):
+def update_name(name, street_mapping):
 
     # YOUR CODE HERE
     name_split = name.split(" ")

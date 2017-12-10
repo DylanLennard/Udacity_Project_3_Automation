@@ -78,8 +78,6 @@ DROP TABLE IF EXISTS NODES_TAGS;
 
 
 
-
-
 if __name__ == "__main__":
 
     # get the data (optional)
