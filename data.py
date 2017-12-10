@@ -44,6 +44,7 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
     # YOUR CODE HERE
     def get_tags(element):
         tags = []
+        id_num = element.attrib['id']
         for child in element.iter('tag'): 
             
             attr = child.attrib
@@ -53,7 +54,7 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
                 continue
                 
             child_dict = {}
-            child_dict['id'] = element.attrib['id']
+            child_dict['id'] = id_num
             child_dict['value'] = attr['v']
             
         
