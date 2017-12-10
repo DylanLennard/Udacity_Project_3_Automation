@@ -178,16 +178,10 @@ def process_map(file_in, validate):
                     validate_element(el, validator)
 
                 if element.tag == 'node':
-                    # call function from audit
-                    # check_and_fix_street_name(element)
-                    # then finish writing to csv
                     nodes_writer.writerow(el['node'])
                     node_tags_writer.writerows(el['node_tags'])
 
                 elif element.tag == 'way':
-                    # call function from audit
-                    # check_and_fix_street_name(element)
-                    # then finish writing to csv
                     ways_writer.writerow(el['way'])
                     way_nodes_writer.writerows(el['way_nodes'])
                     way_tags_writer.writerows(el['way_tags'])
